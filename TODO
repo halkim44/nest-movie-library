@@ -1,0 +1,11 @@
+Features:
+  ☐ display list of movies
+  ☐ get movies based on ID
+  ☐ add movies
+  ☐ delete movies
+  ☐ update movies
+  ☐ get lists of directors
+  ☐ get director's average Imdb rating
+  ☐ get director's average Tomatoes rating
+  ☐ get movies released in certain year
+
