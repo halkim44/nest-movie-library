@@ -68,4 +68,11 @@ export class MovieController {
       movie,
     });
   }
+
+  @Get('/director/average-ratings/')
+  async getDirectorAvgMovieRatings(@Res() res, @Query('name') name) {
+    const avgRatings = await this.movieService.getDirectorAvgRatings(name);
+    if (!avgRatings) throw new NotFoundException('Director does not exist!');
+    return res.status(HttpStatus.OK).json(avgRatings);
+  }
 }

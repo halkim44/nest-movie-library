@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Movie } from './interfaces/movie.interface';
 import { Model } from 'mongoose';
 import { CreateMovieDTO } from './dto/create-movie.dto';
+import { AvgDirectorRating } from './interfaces/avgDirectorsRating.interface';
 
 @Injectable()
 export class MovieService {
@@ -38,5 +39,32 @@ export class MovieService {
   async deleteMovie(movieID): Promise<any> {
     const deletedMovie = await this.movieModel.findByIdAndRemove(movieID);
     return deletedMovie;
+  }
+  // Get Director Average ratings
+
+  async getDirectorAvgRatings(name): Promise<AvgDirectorRating> {
+    const avgDirectorRating = await this.movieModel
+      .aggregate([
+        {
+          $match: {
+            directors: {
+              $in: [name],
+            },
+          },
+        },
+        {
+          $group: {
+            _id: name + '-avg-movie-ratings',
+            avgImdbRating: {
+              $avg: '$imdb.rating',
+            },
+            avgTomatoesRating: {
+              $avg: '$tomatoes.viewer.rating',
+            },
+          },
+        },
+      ])
+      .exec();
+    return avgDirectorRating;
   }
 }
